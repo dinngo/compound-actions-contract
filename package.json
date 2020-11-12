@@ -1,0 +1,50 @@
+{
+  "name": "Furucombo",
+  "version": "0.12.1",
+  "description": "Furucombo contracts",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "build": "scripts/build.sh",
+    "compile": "truffle compile",
+    "test": "scripts/test.sh --network development",
+    "lint:solhint": "solhint \"contracts/**/*.sol\"",
+    "lint:prettier": "scripts/prettier.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@garage.dinngo.co:hackathon-black/legocontract.git"
+  },
+  "author": "Ben Huang",
+  "license": "MIT",
+  "devDependencies": {
+    "@balancer-labs/sor": "^0.4.0-5",
+    "@openzeppelin/test-helpers": "^0.5.5",
+    "@truffle/hdwallet-provider": "^1.0.35",
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "chai-bignumber": "^3.0.0",
+    "ethereumjs-abi": "^0.6.8",
+    "ethereumjs-util": "^6.2.0",
+    "ganache-cli": "6.11.0",
+    "husky": "^4.2.5",
+    "node-fetch": "^2.6.0",
+    "prettier": "^1.19.1",
+    "prettier-plugin-solidity": "^1.0.0-alpha.57",
+    "query-string": "^6.13.1",
+    "solc": "0.5.16",
+    "solhint": "^3.0.0",
+    "truffle": "5.1.46",
+    "web3-provider-engine": "^15.0.12"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^2.5.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint:prettier && npm run lint:solhint"
+    }
+  }
+}
