@@ -26,6 +26,17 @@
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 const fs = require('fs');
 
+let key_beta;
+
+try {
+  key_beta = fs
+    .readFileSync('.secret_beta')
+    .toString()
+    .trim();
+} catch (err) {
+  console.log('No available .secret_beta');
+}
+
 module.exports = {
   networks: {
     development: {
@@ -35,10 +46,21 @@ module.exports = {
       gasPrice: 0x01,
       gas: 5000000,
     },
+    beta: {
+      provider: function() {
+        return new HDWalletProvider(
+          key_beta,
+          'https://geth-beta.furucombo.app'
+        );
+      },
+      network_id: '*',
+      gasPrice: 0x01,
+      gas: 5000000,
+    },
   },
   compilers: {
     solc: {
-      version: '0.5.16',
+      version: '0.6.12',
       settings: {
         optimizer: {
           enabled: true,

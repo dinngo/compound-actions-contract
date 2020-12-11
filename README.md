@@ -41,6 +41,10 @@ Registry handles the verification for the valid handlers called by proxy. Every 
 
 Handler implements the logic to interact with the external services. Handlers should be treated as libraries, which does not hold states.
 
+## Contribute
+
+Please refer to the [contribution guide](CONTRIBUTING.md).
+
 ## License
 
 Furucombo is released under the [MIT License](LICENSE).
