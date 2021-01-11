@@ -1,6 +1,6 @@
 {
   "name": "Furucombo",
-  "version": "0.13.0",
+  "version": "1.0.0",
   "description": "Furucombo contracts",
   "main": "truffle-config.js",
   "directories": {
@@ -11,7 +11,8 @@
     "compile": "truffle compile",
     "test": "scripts/test.sh --network development",
     "lint:solhint": "solhint \"contracts/**/*.sol\"",
-    "lint:prettier": "scripts/prettier.sh"
+    "lint:prettier": "scripts/prettier.sh",
+    "test-migration": "scripts/test.sh --network migration"
   },
   "repository": {
     "type": "git",

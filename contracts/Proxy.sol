@@ -42,8 +42,15 @@ contract Proxy is Storage, Config {
             require(_isValid(msg.sender), "Invalid caller");
 
             address target =
-                address(bytes20(IRegistry(_getRegistry()).getInfo(msg.sender)));
-            _exec(target, msg.data);
+                address(bytes20(IRegistry(_getRegistry()).infos(msg.sender)));
+            bytes memory result = _exec(target, msg.data);
+
+            // return result for aave v2 flashloan()
+            uint256 size = result.length;
+            assembly {
+                let loc := add(result, 0x20)
+                return(loc, size)
+            }
         }
     }
 
@@ -75,6 +82,7 @@ contract Proxy is Storage, Config {
         bytes[] memory datas
     ) public payable {
         require(msg.sender == address(this), "Does not allow external calls");
+        require(_getSender() != address(0), "Sender should be initialized");
         _execs(tos, configs, datas);
     }
 
@@ -153,7 +161,9 @@ contract Proxy is Storage, Config {
                 if iszero(iszero(m)) {
                     // Assert no overflow first
                     let p := mul(m, ref)
-                    if iszero(eq(div(p, m), ref)) { revert(0, 0) } // require(p / m == ref)
+                    if iszero(eq(div(p, m), ref)) {
+                        revert(0, 0)
+                    } // require(p / m == ref)
                     ref := div(p, base)
                 }
                 mstore(loc, ref)
@@ -237,8 +247,11 @@ contract Proxy is Storage, Config {
         // If the stack length equals 0, just skip
         // If the top is a custom post-process, replace it with the handler
         // address.
-        if (stack.length == 0) return;
-        else if (stack.peek() == bytes32(bytes12(uint96(HandlerType.Custom)))) {
+        if (stack.length == 0) {
+            return;
+        } else if (
+            stack.peek() == bytes32(bytes12(uint96(HandlerType.Custom)))
+        ) {
             stack.pop();
             // Check if the handler is already set.
             if (bytes4(stack.peek()) != 0x00000000) stack.setAddress(_to);
